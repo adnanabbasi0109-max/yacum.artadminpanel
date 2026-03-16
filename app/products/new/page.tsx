@@ -51,6 +51,7 @@ export default function NewProduct() {
     frameOptions: DEFAULT_FRAME_OPTIONS,
     status: "draft" as "draft" | "published",
     isAuctionPiece: false,
+    isFeatured: false,
   });
 
   const updateField = (field: string, value: unknown) => {
@@ -305,7 +306,20 @@ export default function NewProduct() {
             Pricing
           </h2>
 
-          <div className="mb-6">
+          <div className="mb-6 space-y-4">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.isFeatured}
+                onChange={(e) =>
+                  updateField("isFeatured", e.target.checked)
+                }
+                className="w-4 h-4 accent-[#c9a96e]"
+              />
+              <span className="text-sm text-[#e8e0d0]/70">
+                Feature on homepage
+              </span>
+            </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"

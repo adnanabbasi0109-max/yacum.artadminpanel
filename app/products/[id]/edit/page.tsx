@@ -42,6 +42,7 @@ export default function EditProduct({
     printPriceBase: 4999,
     status: "draft" as string,
     isAuctionPiece: false,
+    isFeatured: false,
   });
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function EditProduct({
             printPriceBase: data.printPriceBase || 0,
             status: data.status || "draft",
             isAuctionPiece: data.isAuctionPiece || false,
+            isFeatured: data.isFeatured || false,
           });
           if (data.previewImageUrl) setPreviewUrl(data.previewImageUrl);
         }
@@ -299,7 +301,20 @@ export default function EditProduct({
           >
             Pricing
           </h2>
-          <div className="mb-6">
+          <div className="mb-6 space-y-4">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.isFeatured}
+                onChange={(e) =>
+                  updateField("isFeatured", e.target.checked)
+                }
+                className="w-4 h-4 accent-[#c9a96e]"
+              />
+              <span className="text-sm text-[#e8e0d0]/70">
+                Feature on homepage
+              </span>
+            </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"

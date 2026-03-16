@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from "uuid";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION || "us-east-1",
@@ -24,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
     const ext = file.name.split(".").pop() || "png";
-    const key = `${folder}/${uuidv4()}.${ext}`;
+    const key = `${folder}/${crypto.randomUUID()}.${ext}`;
 
     // If S3 is configured, upload there
     if (process.env.AWS_ACCESS_KEY_ID) {
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest) {
     const path = await import("path");
     const uploadsDir = path.join(process.cwd(), "public", "uploads", folder);
     await fs.mkdir(uploadsDir, { recursive: true });
-    const filename = `${uuidv4()}.${ext}`;
+    const filename = `${crypto.randomUUID()}.${ext}`;
     const filepath = path.join(uploadsDir, filename);
     await fs.writeFile(filepath, buffer);
     const url = `/uploads/${folder}/${filename}`;

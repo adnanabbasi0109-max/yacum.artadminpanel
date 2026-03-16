@@ -27,6 +27,7 @@ export interface IArtwork extends Document {
   frameOptions: IFrameOption[];
   status: "draft" | "published" | "soldout";
   isAuctionPiece: boolean;
+  isFeatured: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -69,6 +70,7 @@ const ArtworkSchema = new Schema<IArtwork>(
       default: "published",
     },
     isAuctionPiece: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
