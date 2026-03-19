@@ -9,6 +9,7 @@ interface Stats {
   published: number;
   draft: number;
   auction: number;
+  orders: number;
 }
 
 interface AuctionStats {
@@ -25,6 +26,7 @@ export default function AdminDashboard() {
     published: 0,
     draft: 0,
     auction: 0,
+    orders: 0,
   });
   const [auctionStats, setAuctionStats] = useState<AuctionStats>({
     totalAuctions: 0,
@@ -43,8 +45,11 @@ export default function AdminDashboard() {
       fetch("/api/auctions")
         .then((r) => r.json())
         .catch(() => []),
+      fetch("/api/orders")
+        .then((r) => r.json())
+        .catch(() => []),
     ])
-      .then(([products, auctions]) => {
+      .then(([products, auctions, orders]) => {
         if (Array.isArray(products)) {
           setStats({
             total: products.length,
@@ -57,6 +62,7 @@ export default function AdminDashboard() {
             auction: products.filter(
               (p: { isAuctionPiece: boolean }) => p.isAuctionPiece
             ).length,
+            orders: Array.isArray(orders) ? orders.length : 0,
           });
         }
         if (Array.isArray(auctions)) {
@@ -90,6 +96,7 @@ export default function AdminDashboard() {
     { label: "Published", value: stats.published, color: "#4ade80" },
     { label: "Drafts", value: stats.draft, color: "#facc15" },
     { label: "Auction Pieces", value: stats.auction, color: "#f87171" },
+    { label: "Orders", value: stats.orders, color: "#60a5fa" },
   ];
 
   const auctionCards = [
@@ -204,7 +211,7 @@ export default function AdminDashboard() {
         >
           Quick Actions
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
           <Link
             href="/products/new"
             className="border border-[#c9a96e]/20 p-5 hover:border-[#c9a96e]/50 hover:bg-[#c9a96e]/5 transition-all text-center"
@@ -218,6 +225,13 @@ export default function AdminDashboard() {
           >
             <span className="text-2xl block mb-2">◇</span>
             <span className="text-sm text-[#e8e0d0]/60">View All Products</span>
+          </Link>
+          <Link
+            href="/orders"
+            className="border border-[#c9a96e]/20 p-5 hover:border-[#c9a96e]/50 hover:bg-[#c9a96e]/5 transition-all text-center"
+          >
+            <span className="text-2xl block mb-2">▤</span>
+            <span className="text-sm text-[#e8e0d0]/60">Manage Orders</span>
           </Link>
           <Link
             href="/auctions/new"
