@@ -14,9 +14,15 @@ export interface IFrameOption {
 
 export interface IArtwork extends Document {
   slug: string;
+  title: string;
   verseId: string;
   arabic: string;
+  transliteration?: string;
   translation: string;
+  tafsir?: string;
+  surah?: string;
+  surahNumber?: number;
+  ayah?: number;
   theme: string;
   previewImageUrl: string;
   highResS3Key: string;
@@ -26,6 +32,8 @@ export interface IArtwork extends Document {
   printSizes: IPrintSize[];
   frameOptions: IFrameOption[];
   status: "draft" | "published" | "soldout";
+  orientation?: "vertical" | "horizontal";
+  description?: string;
   isAuctionPiece: boolean;
   isFeatured: boolean;
   createdAt: Date;
@@ -53,9 +61,15 @@ const FrameOptionSchema = new Schema<IFrameOption>(
 const ArtworkSchema = new Schema<IArtwork>(
   {
     slug: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
     verseId: { type: String, required: true },
     arabic: { type: String, required: true },
+    transliteration: { type: String },
     translation: { type: String, required: true },
+    tafsir: { type: String },
+    surah: { type: String },
+    surahNumber: { type: Number },
+    ayah: { type: Number },
     theme: { type: String, required: true },
     previewImageUrl: { type: String, required: true },
     highResS3Key: { type: String, required: true },
@@ -69,6 +83,12 @@ const ArtworkSchema = new Schema<IArtwork>(
       enum: ["draft", "published", "soldout"],
       default: "published",
     },
+    orientation: {
+      type: String,
+      enum: ["vertical", "horizontal"],
+      default: "vertical",
+    },
+    description: { type: String },
     isAuctionPiece: { type: Boolean, default: false },
     isFeatured: { type: Boolean, default: false },
   },

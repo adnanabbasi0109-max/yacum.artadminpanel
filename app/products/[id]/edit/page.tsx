@@ -32,15 +32,23 @@ export default function EditProduct({
 
   const [form, setForm] = useState({
     slug: "",
+    title: "",
     verseId: "",
     arabic: "",
+    transliteration: "",
     translation: "",
+    tafsir: "",
+    surah: "",
+    surahNumber: 0,
+    ayah: 0,
     theme: "Light",
     previewImageUrl: "",
     highResS3Key: "",
-    digitalPrice: 2999,
-    printPriceBase: 4999,
+    digitalPrice: 49900,
+    printPriceBase: 149900,
     status: "draft" as string,
+    orientation: "vertical" as string,
+    description: "",
     isAuctionPiece: false,
     isFeatured: false,
   });
@@ -52,15 +60,23 @@ export default function EditProduct({
         if (data && !data.error) {
           setForm({
             slug: data.slug || "",
+            title: data.title || "",
             verseId: data.verseId || "",
             arabic: data.arabic || "",
+            transliteration: data.transliteration || "",
             translation: data.translation || "",
+            tafsir: data.tafsir || "",
+            surah: data.surah || "",
+            surahNumber: data.surahNumber || 0,
+            ayah: data.ayah || 0,
             theme: data.theme || "Light",
             previewImageUrl: data.previewImageUrl || "",
             highResS3Key: data.highResS3Key || "",
             digitalPrice: data.digitalPrice || 0,
             printPriceBase: data.printPriceBase || 0,
             status: data.status || "draft",
+            orientation: data.orientation || "vertical",
+            description: data.description || "",
             isAuctionPiece: data.isAuctionPiece || false,
             isFeatured: data.isFeatured || false,
           });
@@ -227,12 +243,12 @@ export default function EditProduct({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
-                Verse ID
+                Title
               </label>
               <input
                 type="text"
-                value={form.verseId}
-                onChange={(e) => updateField("verseId", e.target.value)}
+                value={form.title}
+                onChange={(e) => updateField("title", e.target.value)}
                 className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
               />
             </div>
@@ -248,29 +264,14 @@ export default function EditProduct({
                 className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
               />
             </div>
-            <div className="md:col-span-2">
+            <div>
               <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
-                Arabic Text
+                Verse ID
               </label>
-              <textarea
-                value={form.arabic}
-                onChange={(e) => updateField("arabic", e.target.value)}
-                required
-                dir="rtl"
-                rows={3}
-                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-lg text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
-                style={{ fontFamily: "var(--font-arabic)" }}
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
-                Translation
-              </label>
-              <textarea
-                value={form.translation}
-                onChange={(e) => updateField("translation", e.target.value)}
-                required
-                rows={3}
+              <input
+                type="text"
+                value={form.verseId}
+                onChange={(e) => updateField("verseId", e.target.value)}
                 className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
               />
             </div>
@@ -289,6 +290,113 @@ export default function EditProduct({
                   </option>
                 ))}
               </select>
+            </div>
+            <div>
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Orientation
+              </label>
+              <select
+                value={form.orientation}
+                onChange={(e) => updateField("orientation", e.target.value)}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+              >
+                <option value="vertical">Vertical (15&quot; × 20&quot;)</option>
+                <option value="horizontal">Horizontal (16&quot; × 9&quot;)</option>
+              </select>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                  Surah
+                </label>
+                <input
+                  type="text"
+                  value={form.surah}
+                  onChange={(e) => updateField("surah", e.target.value)}
+                  className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-2 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                  No.
+                </label>
+                <input
+                  type="number"
+                  value={form.surahNumber || ""}
+                  onChange={(e) => updateField("surahNumber", parseInt(e.target.value) || 0)}
+                  className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-2 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                  Ayah
+                </label>
+                <input
+                  type="number"
+                  value={form.ayah || ""}
+                  onChange={(e) => updateField("ayah", parseInt(e.target.value) || 0)}
+                  className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-2 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Arabic Text
+              </label>
+              <textarea
+                value={form.arabic}
+                onChange={(e) => updateField("arabic", e.target.value)}
+                required
+                dir="rtl"
+                rows={3}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-lg text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+                style={{ fontFamily: "var(--font-arabic)" }}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Transliteration
+              </label>
+              <textarea
+                value={form.transliteration}
+                onChange={(e) => updateField("transliteration", e.target.value)}
+                rows={2}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Translation
+              </label>
+              <textarea
+                value={form.translation}
+                onChange={(e) => updateField("translation", e.target.value)}
+                required
+                rows={3}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Tafsir / Description
+              </label>
+              <textarea
+                value={form.tafsir}
+                onChange={(e) => updateField("tafsir", e.target.value)}
+                rows={6}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-[10px] tracking-[0.3em] uppercase text-[#e8e0d0]/40 mb-2 block">
+                Short Description
+              </label>
+              <textarea
+                value={form.description}
+                onChange={(e) => updateField("description", e.target.value)}
+                rows={2}
+                className="w-full bg-[#1a1a1a] border border-[#c9a96e]/15 px-4 py-3 text-sm text-[#e8e0d0] focus:border-[#c9a96e]/50 focus:outline-none transition-colors"
+              />
             </div>
           </div>
         </div>
