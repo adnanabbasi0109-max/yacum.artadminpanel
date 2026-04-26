@@ -16,6 +16,7 @@ interface OrderData {
   orderNumber: string;
   name: string;
   email: string;
+  phone?: string;
   items: Array<{
     title: string;
     type: string;
@@ -254,6 +255,12 @@ export default function OrderDetailPage() {
                 <p className="text-[#e8e0d0]/40 text-xs mb-1">Email</p>
                 <p className="text-[#e8e0d0]">{order.email}</p>
               </div>
+              {order.phone && (
+                <div>
+                  <p className="text-[#e8e0d0]/40 text-xs mb-1">Phone</p>
+                  <p className="text-[#e8e0d0]">{order.phone}</p>
+                </div>
+              )}
               <div>
                 <p className="text-[#e8e0d0]/40 text-xs mb-1">Payment Status</p>
                 <p
