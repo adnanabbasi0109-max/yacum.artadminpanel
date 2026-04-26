@@ -7,6 +7,7 @@ import AdminShell from "@/components/AdminShell";
 interface Product {
   _id: string;
   slug: string;
+  title?: string;
   theme: string;
   arabic: string;
   translation: string;
@@ -14,6 +15,8 @@ interface Product {
   printPriceBase: number;
   status: "draft" | "published" | "soldout";
   isAuctionPiece: boolean;
+  isFeatured?: boolean;
+  orientation?: "vertical" | "horizontal";
   previewImageUrl: string;
   createdAt: string;
 }
@@ -144,11 +147,16 @@ export default function ProductsList() {
                         )}
                       </div>
                       <div>
-                        <p className="text-sm text-[#e8e0d0] truncate max-w-[200px]">
-                          {product.translation?.slice(0, 60)}...
+                        <p className="text-sm text-[#e8e0d0] truncate max-w-[260px]">
+                          {product.title || product.slug}
+                          {product.isFeatured && (
+                            <span className="ml-2 text-[9px] text-[#c9a96e] tracking-widest uppercase">
+                              ★ Featured
+                            </span>
+                          )}
                         </p>
-                        <p className="text-xs text-[#e8e0d0]/30 mt-0.5">
-                          {product.slug}
+                        <p className="text-xs text-[#e8e0d0]/30 mt-0.5 truncate max-w-[260px]">
+                          {product.translation?.slice(0, 80)}
                         </p>
                       </div>
                     </div>
@@ -163,7 +171,7 @@ export default function ProductsList() {
                       <span className="text-xs text-[#f87171]">Auction</span>
                     ) : (
                       <span className="text-sm">
-                        ${(product.digitalPrice / 100).toFixed(0)}
+                        ₹{(product.digitalPrice / 100).toFixed(0)}
                       </span>
                     )}
                   </td>
