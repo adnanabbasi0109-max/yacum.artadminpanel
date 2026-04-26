@@ -205,6 +205,7 @@ export default function NewProduct() {
                 value={form.previewImageUrl}
                 onChange={(e) => {
                   updateField("previewImageUrl", e.target.value);
+                  if (!form.highResS3Key) updateField("highResS3Key", e.target.value);
                   setPreviewUrl(e.target.value);
                 }}
                 placeholder="https://..."

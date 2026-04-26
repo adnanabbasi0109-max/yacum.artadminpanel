@@ -72,7 +72,7 @@ const ArtworkSchema = new Schema<IArtwork>(
     ayah: { type: Number },
     theme: { type: String, required: true },
     previewImageUrl: { type: String, required: true },
-    highResS3Key: { type: String, required: true },
+    highResS3Key: { type: String, default: "" },
     qrCodeImageUrl: { type: String },
     digitalPrice: { type: Number, required: true },
     printPriceBase: { type: Number, required: true },
